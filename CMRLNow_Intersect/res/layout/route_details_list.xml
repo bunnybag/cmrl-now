@@ -1,0 +1,91 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".Route_Details_List_Activity" >
+
+ <LinearLayout
+     android:layout_width="wrap_content"
+     android:layout_height="wrap_content" >
+
+     <TextView
+         android:id="@+id/Detail_Running_Time"
+         android:layout_width="56dp"
+         android:layout_height="68dp"
+         android:layout_margin="10dp"
+         android:text="Time"
+         android:textAppearance="?android:attr/textAppearanceSmall"
+         android:textSize="20dp" />
+
+     <LinearLayout
+         android:layout_width="wrap_content"
+         android:layout_height="match_parent"
+         android:orientation="vertical" >
+
+         <TextView
+             android:id="@+id/Detail_Src_Text_View"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:text="From : "
+             android:textAppearance="?android:attr/textAppearanceMedium" />
+
+         <TextView
+             android:id="@+id/Detail_Dest_Text_View"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:text="To :"
+             android:textAppearance="?android:attr/textAppearanceMedium" />
+
+         <LinearLayout
+             android:layout_width="wrap_content"
+             android:layout_height="match_parent"
+             android:orientation="horizontal" >
+
+             <TextView
+                 android:id="@+id/Detail_Distance_Text"
+                 android:layout_width="28dp"
+                 android:layout_height="wrap_content"
+                 android:layout_margin="10dp"
+                 android:text="Distance"
+                 android:textAppearance="?android:attr/textAppearanceSmall" />
+
+             <TextView
+                 android:id="@+id/Detail_Fare_Text"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_margin="10dp"
+                 android:text="Fare"
+                 android:textAppearance="?android:attr/textAppearanceSmall" />
+
+             <TextView
+                 android:id="@+id/Detail_Interchange_Text"
+                 android:layout_width="46dp"
+                 android:layout_height="wrap_content"
+                 android:layout_margin="10dp"
+                 android:text="Interchange"
+                 android:textAppearance="?android:attr/textAppearanceSmall" />
+
+             <TextView
+                 android:id="@+id/Detail_Stops_Text"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_margin="10dp"
+                 android:text="Stops"
+                 android:textAppearance="?android:attr/textAppearanceSmall" />
+         </LinearLayout>
+     </LinearLayout>
+ </LinearLayout>
+    
+    <ListView
+        android:id="@+id/Route_Detail_Station_List_View"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" >
+    </ListView>
+
+</LinearLayout>

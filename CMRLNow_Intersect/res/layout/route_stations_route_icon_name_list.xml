@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/Route_Station_Code_Name_Layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <ImageView
+        android:id="@+id/route_image1"
+        android:layout_width="34dp"
+        android:layout_height="34dp" />
+
+    <ImageView
+        android:id="@+id/route_image2"
+        android:layout_width="34dp"
+        android:layout_height="34dp" />
+
+    <ImageView
+        android:id="@+id/route_image3"
+        android:layout_width="34dp"
+        android:layout_height="34dp" />
+
+    <TextView
+        android:id="@+id/route_station_name_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:text="Station_Name"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+</LinearLayout>

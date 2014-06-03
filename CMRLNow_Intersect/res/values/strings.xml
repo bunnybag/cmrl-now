@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">CMRL Now</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_train__timings">Train_Timings</string>
+    <string name="Source_Hint_Str">Source Station</string>
+    <string name="Dest_Hint_Str">Destination Station</string>
+    <string name="Get_Route_Button_Str">Route</string>
+    <string name="Src_Station_Bundle_Key_Str">Bundle_Source_Station_Key</string>
+    <string name="Dest_Station_Bundle_Key_Str">Bundle_Dest_Station_Key</string>
+    <string name="title_activity_map_view">MapViewActivity</string>
+    <string name="title_activity_tab_panel">TabPanelActivity</string>
+    <string name="title_activity_result__detail__list">Route Details</string>
+    <string name="title_activity_route__details__list_">Route Details</string>
+    <string name="title_activity_splash_">Splash</string>
+    <string name="title_activity_station__details_">Station Details</string>
+    <string name="title_activity_nearby__station__search">Stations Nearby</string>
+
+</resources>
