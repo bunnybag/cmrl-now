@@ -166,8 +166,6 @@ public class Select_Src_Dest_List extends Activity{
 				
 				Intent nearby_station_search = new Intent();
 				nearby_station_search.setClass(getApplicationContext(), Nearby_Station_Search.class);
-				
-				
 				startActivity(nearby_station_search);
 			}
 		});
