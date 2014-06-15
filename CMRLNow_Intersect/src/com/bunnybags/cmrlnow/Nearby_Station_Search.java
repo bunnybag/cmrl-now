@@ -47,12 +47,11 @@ import android.widget.Toast;
 public class Nearby_Station_Search extends Activity implements LocationListener{
 
 	private LocationManager location_manager;
-	private LocationListener location_listener_gps;
-	private LocationListener location_listener_network;
 	GoogleMap googleMap;
 	public Context Application_Context;
 	public boolean update_nearby_station;
 	Marker current_position_marker;
+	List<Marker> Nearest_Station_Marker;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -69,8 +68,7 @@ public class Nearby_Station_Search extends Activity implements LocationListener{
 		Application_Context = getApplicationContext();
 		update_nearby_station = true;
 		current_position_marker = null;
-		
-		
+		Nearest_Station_Marker = new ArrayList<Marker>();
 		
 		try 
 		{
@@ -82,9 +80,6 @@ public class Nearby_Station_Search extends Activity implements LocationListener{
 		    Nearby_Search_Google_Map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 		    Nearby_Search_Google_Map.setMyLocationEnabled(true);
 		    Nearby_Search_Google_Map.setTrafficEnabled(true);
-		    
-		    
-
 		} 
 		catch (Exception e) 
 		{
@@ -92,134 +87,8 @@ public class Nearby_Station_Search extends Activity implements LocationListener{
 		}
 		
 		
-		
-		
-		
 		LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 		this.location_manager = locationManager;
-		
-/*		
-		LocationListener location_listener = new LocationListener() {
-			
-			@Override
-			public void onStatusChanged(String arg0, int arg1, Bundle arg2) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void onProviderEnabled(String arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void onProviderDisabled(String arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void onLocationChanged(Location arg0) {
-				Toast.makeText(getApplicationContext(),"Location received from NETWORK Provider",Toast.LENGTH_SHORT).show();
-				Network_Provider_Location_Text_View.setText(arg0.toString());
-				
-				if(update_nearby_station)
-				{
-					List<Nearby_Search_Result> neaby_search_result_list;
-					
-					neaby_search_result_list = Get_Nearest_Station_List_To_Location(arg0);
-					Nearby_Search_List_Adapter nearby_station_summary_adapter = new Nearby_Search_List_Adapter(Application_Context, R.layout.nearest_station_search_list_item_layout, neaby_search_result_list);
-					
-					nearby_station_summary_adapter.setDropDownViewResource(R.layout.nearest_station_search_list_item_layout);
-					Nearby_Staion_Result_List.setAdapter(nearby_station_summary_adapter);
-	
-					update_nearby_station = false;
-				}
-				
-				
-				//if(update_nearby_station)
-				{
-
-//					ListView Nearby_Staion_Result_List_View = (ListView) findViewById(R.id.Nearby_Station_Search_Summary_ListView);
-					
-//					List<Nearby_Search_Result> neaby_search_result_list;
-//					
-//					neaby_search_result_list = Get_Nearest_Station_List_To_Location(arg0);
-//					Nearby_Search_List_Adapter nearby_station_summary_adapter = new Nearby_Search_List_Adapter(Application_Context, R.layout.nearest_station_search_list_item_layout, neaby_search_result_list);
-//					nearby_station_summary_adapter.setDropDownViewResource(R.layout.nearest_station_search_list_item_layout);
-//					Nearby_Staion_Result_List_View.setAdapter(nearby_station_summary_adapter);
-					
-//					Toast.makeText(getApplicationContext(),"List View updated",Toast.LENGTH_SHORT).show();
-					
-					//Nearby_Staion_Result_List_View.setAdapter(nearby_station_summary_adapter);
-	
-	//				update_nearby_station = false;
-				}
-	
-			}
-		};
-		
-		LocationListener location_listener_gps = new LocationListener() {
-			
-			@Override
-			public void onStatusChanged(String arg0, int arg1, Bundle arg2) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void onProviderEnabled(String arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void onProviderDisabled(String arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void onLocationChanged(Location arg0) 
-			{
-
-				Toast.makeText(getApplicationContext(),"Location received from GPS",Toast.LENGTH_SHORT).show();
-				GPS_Location_Text_View.setText(arg0.toString());
-				
-				
-				
-				if(update_nearby_station)
-				{
-
-					ListView Nearby_Staion_Result_List_View = (ListView) findViewById(R.id.Nearby_Station_Search_Summary_ListView);
-					
-					List<Nearby_Search_Result> neaby_search_result_list;
-					
-					neaby_search_result_list = Get_Nearest_Station_List_To_Location(arg0);
-					//Nearby_Search_List_Adapter nearby_station_summary_adapter = new Nearby_Search_List_Adapter(Application_Context, R.layout.nearest_station_search_list_item_layout, neaby_search_result_list);
-					//nearby_station_summary_adapter.setDropDownViewResource(R.layout.nearest_station_search_list_item_layout);
-					//Nearby_Staion_Result_List_View.setAdapter(nearby_station_summary_adapter);
-					
-					nearby_station_summary_adapter.clear();
-					nearby_station_summary_adapter.addAll(neaby_search_result_list);
-					
-					nearby_station_summary_adapter.notifyDataSetChanged();
-					
-					Nearby_Staion_Result_List_View.setAdapter(nearby_station_summary_adapter);
-	
-					update_nearby_station = false;
-				}
-	
-				
-				LatLng Current_Lat_Lng = new LatLng(arg0.getLatitude(), arg0.getLongitude());
-				Marker current_location = googleMap.addMarker(new MarkerOptions().position(Current_Lat_Lng).title("Current Position"));
-				
-			}
-		};
-		
-		this.location_listener_network = location_listener;
-		this.location_listener_gps = location_listener_gps;*/
 		
 		Last_Known_Location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 		if(Last_Known_Location != null)
@@ -310,8 +179,7 @@ public class Nearby_Station_Search extends Activity implements LocationListener{
 		// TODO Auto-generated method stub
 		Toast.makeText(getApplicationContext(),"Back",Toast.LENGTH_SHORT).show();
 		
-		this.location_manager.removeUpdates(location_listener_network);
-		this.location_manager.removeUpdates(location_listener_gps);
+		this.location_manager.removeUpdates(this);
 		super.onBackPressed();
 	}
 
@@ -338,6 +206,9 @@ public class Nearby_Station_Search extends Activity implements LocationListener{
 	public void onLocationChanged(Location arg0) {
 		// TODO Auto-generated method stub
 
+		String station_name;
+		DBHelper db_helper = new DBHelper(Application_Context);
+		
 		Toast.makeText(getApplicationContext(),"Location received from " + arg0.getProvider(),Toast.LENGTH_SHORT).show();
 		
 		ListView Nearby_Staion_Result_List = (ListView) findViewById(R.id.Nearby_Station_Search_Summary_ListView);
@@ -351,6 +222,14 @@ public class Nearby_Station_Search extends Activity implements LocationListener{
 
 		LatLng Current_Lat_Lng = new LatLng(arg0.getLatitude(), arg0.getLongitude());
 
+		
+		for (Marker nearest_station_marker : Nearest_Station_Marker) 
+		{
+			nearest_station_marker.remove();
+		}
+		
+		Nearest_Station_Marker.clear();
+		
 		if(current_position_marker==null)
 		{
 			Marker current_location = googleMap.addMarker(new MarkerOptions().position(Current_Lat_Lng).title("Current Position"));
@@ -361,7 +240,16 @@ public class Nearby_Station_Search extends Activity implements LocationListener{
 			current_position_marker.setPosition(Current_Lat_Lng);
 		}
 		
+		for (Nearby_Search_Result nearby_Search_Result : neaby_search_result_list) 
+		{
+			station_name = nearby_Search_Result.getStation_Name();
+			Location station_location = db_helper.get_Station_Location_by_Station_Name(station_name);
+			Marker nearest_station_marker = googleMap.addMarker(new MarkerOptions().position(new LatLng(station_location.getLatitude(), station_location.getLongitude())).title(station_name));
+			Nearest_Station_Marker.add(nearest_station_marker);
+		}
 		
+		googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(Current_Lat_Lng, 16));
+
 	}
 
 	@Override
