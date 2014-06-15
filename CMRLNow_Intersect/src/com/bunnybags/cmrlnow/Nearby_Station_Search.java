@@ -31,8 +31,12 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -52,6 +56,7 @@ public class Nearby_Station_Search extends Activity implements LocationListener{
 	public boolean update_nearby_station;
 	Marker current_position_marker;
 	List<Marker> Nearest_Station_Marker;
+	public Nearby_Station_Search nearby_activity = this;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -59,9 +64,6 @@ public class Nearby_Station_Search extends Activity implements LocationListener{
 		setContentView(R.layout.nearby_station_search);
 		
 	
-		final TextView Network_Provider_Location_Text_View = (TextView) findViewById(R.id.Network_Provider_Location_Text);
-		final TextView GPS_Location_Text_View = (TextView) findViewById(R.id.GPS_Location_Text);
-		final ListView Nearby_Staion_Result_List = (ListView) findViewById(R.id.Nearby_Station_Search_Summary_ListView);
 		GoogleMap Nearby_Search_Google_Map = null;
 		Location Last_Known_Location;
 		
@@ -90,21 +92,60 @@ public class Nearby_Station_Search extends Activity implements LocationListener{
 		LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 		this.location_manager = locationManager;
 		
+		boolean gps_provider_status = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+		
+				
+		if(!gps_provider_status)
+		{
+			AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+ 
+			alertDialogBuilder.setTitle("Location Service");
+			alertDialogBuilder.setCancelable(false);
+			alertDialogBuilder.setMessage("Disabling GPS will give inaccurate location updates");
+			alertDialogBuilder.setIcon(android.R.drawable.ic_dialog_alert);
+			
+			alertDialogBuilder.setNegativeButton("Cancel", new OnClickListener() {
+			
+					@Override
+					public void onClick(DialogInterface arg0, int arg1) {
+							arg0.cancel();
+						}
+					});
+			
+			alertDialogBuilder.setPositiveButton("Enable GPS", new OnClickListener() {
+						
+						@Override
+						public void onClick(DialogInterface arg0, int arg1) {
+						
+							Intent callGPSSettingIntent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+							nearby_activity.startActivity(callGPSSettingIntent);
+							
+							Toast.makeText(getApplicationContext(),"Settings done",Toast.LENGTH_SHORT).show();
+							
+						}
+					});
+			 
+			AlertDialog alertdialog = alertDialogBuilder.create();
+			alertdialog.setCanceledOnTouchOutside(false);
+			alertdialog.show();
+ 
+		}
+		
 		Last_Known_Location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 		if(Last_Known_Location != null)
 		{
-			Network_Provider_Location_Text_View.setText(Last_Known_Location.toString());
+
 		}
 		
 		Last_Known_Location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 		if(Last_Known_Location != null)
 		{
-			GPS_Location_Text_View.setText(Last_Known_Location.toString());
+
 		}
 		
-		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10000, 0, this);
+		/*locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10000, 0, this);*/
 		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 0, this);
-	
+		
 	}
 
 	private List<Nearby_Search_Result> Get_Nearest_Station_List_To_Location(
@@ -234,6 +275,7 @@ public class Nearby_Station_Search extends Activity implements LocationListener{
 		{
 			Marker current_location = googleMap.addMarker(new MarkerOptions().position(Current_Lat_Lng).title("Current Position"));
 			current_position_marker = current_location;
+			googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(Current_Lat_Lng, 16));
 		}
 		else
 		{
@@ -247,27 +289,22 @@ public class Nearby_Station_Search extends Activity implements LocationListener{
 			Marker nearest_station_marker = googleMap.addMarker(new MarkerOptions().position(new LatLng(station_location.getLatitude(), station_location.getLongitude())).title(station_name));
 			Nearest_Station_Marker.add(nearest_station_marker);
 		}
-		
-		googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(Current_Lat_Lng, 16));
 
 	}
 
 	@Override
 	public void onProviderDisabled(String arg0) {
-		// TODO Auto-generated method stub
-		
+		Toast.makeText(getApplicationContext(),"GPS disabled. Enable for better location updates",Toast.LENGTH_SHORT).show();
 	}
 
 	@Override
 	public void onProviderEnabled(String arg0) {
-		// TODO Auto-generated method stub
-		
+		Toast.makeText(getApplicationContext(),"GPS enabled",Toast.LENGTH_SHORT).show();
 	}
 
 	@Override
 	public void onStatusChanged(String arg0, int arg1, Bundle arg2) {
-		// TODO Auto-generated method stub
-		
+		Toast.makeText(getApplicationContext(),"Status changed",Toast.LENGTH_SHORT).show();
 	}
 
 	

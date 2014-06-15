@@ -70,14 +70,15 @@ public class Nearby_Search_List_Adapter extends ArrayAdapter<Nearby_Search_Resul
 		
 		ImageButton station_details_button_view = (ImageButton) row.findViewById(R.id.Nearest_Station_Details_Button);
 		TextView Station_Name = (TextView) row.findViewById(R.id.Nearest_Station_Name_Text);
+		
+		
 		Station_Name.setText(nearby_search_current_item.getStation_Name());
 		
 		TextView Distance_from_here = (TextView) row.findViewById(R.id.Nearest_Station_Distance_Text);
-		Distance_from_here.setText(Float.toString(nearby_search_current_item.getDistance_from_current()));
+		Distance_from_here.setText(Float.toString(nearby_search_current_item.getDistance_from_current()) + "km" );
 		
 		station_details_button_view.setOnClickListener(new Nearby_Result_Clicker(this.context,nearby_search_current_item.getStation_Name()));
 		
-
 		return row;
 		//return super.getView(position, convertView, parent);
 	}

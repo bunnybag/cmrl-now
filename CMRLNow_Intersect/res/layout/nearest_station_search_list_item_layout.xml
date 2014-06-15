@@ -27,7 +27,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/Nearest_Station_Details_Button"
-        android:layout_marginRight="22dp"
+        android:layout_marginRight="48dp"
         android:layout_toLeftOf="@+id/Nearest_Station_Details_Button"
         android:text="Kms"
         android:textAppearance="?android:attr/textAppearanceSmall" />

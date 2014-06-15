@@ -6,49 +6,17 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".Nearby_Station_Search" >
+    tools:context=".Nearby_Station_Search" > 
 
-    <TextView
-        android:id="@+id/Network_Provider_Location_Text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Network Location" />
-
+    
     <ListView
-        android:id="@+id/Nearby_Station_Search_Summary_ListView"
-        android:layout_width="match_parent"
-        android:layout_height="120dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/GPS_Location_Text"
-        android:layout_marginTop="20dp" >
-
-    </ListView> 
-
-
-<!--
-    <com.google.android.maps.MapView
-        android:id="@+id/Nearest_Stations_Map_View"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_alignLeft="@+id/Nearby_Station_Search_Summary_ListView"
-        android:layout_alignParentBottom="true"
-        android:layout_below="@+id/Nearby_Station_Search_Summary_ListView"
-        android:layout_marginTop="18dp"
-        android:apiKey="{API_KEY}" /> -->
-
-
-<!--
-    <com.google.android.maps.MapView
-        android:id="@+id/nearby_search_google_map_view"
-		android:apiKey="AIzaSyCyWILr1NOJJmFiFkXCUpgZIPaXwLE0jIk"
-        android:layout_width="match_parent"
-        android:layout_height="120dp"
-        android:layout_alignLeft="@+id/Nearby_Station_Search_Summary_ListView"
-        android:layout_alignParentBottom="true"
-        android:layout_below="@+id/Nearby_Station_Search_Summary_ListView"
-        android:layout_marginTop="16dp" /> -->
-
+	     android:id="@+id/Nearby_Station_Search_Summary_ListView"
+	     android:layout_width="match_parent"
+	     android:layout_height="100dp"
+	     android:layout_alignLeft="@+id/nearby_search_google_map_view"
+	     android:layout_alignParentTop="true" >
+	 </ListView>
+    
 	 <fragment
 	     android:id="@+id/nearby_search_google_map_view"
 	     android:name="com.google.android.gms.maps.MapFragment"
@@ -58,43 +26,10 @@
 	     android:layout_alignParentLeft="true"
 	     android:layout_alignParentRight="true"
 	     android:layout_below="@+id/Nearby_Station_Search_Summary_ListView"
-	     android:layout_marginTop="16dp" 
 	     android:layout_marginEnd="0dp"
-	     android:layout_marginRight="0dp"
-	     />
+	     android:layout_marginRight="0dp" />
 
-	 <TextView
-	     android:id="@+id/GPS_Location_Text"
-	     android:layout_width="wrap_content"
-	     android:layout_height="wrap_content"
-	     android:layout_alignParentRight="true"
-	     android:layout_alignTop="@+id/Network_Provider_Location_Text"
-	     android:layout_marginRight="34dp"
-	     android:text="GPS Location"
-	     android:textAppearance="?android:attr/textAppearanceMedium" />
+	 
 
 </RelativeLayout> 
  
- <!-- 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical"
-    tools:context=".Nearby_Station_Search" >
-
-     <fragment
-        android:id="@+id/nearby_search_google_map_view"
-        android:name="com.google.android.gms.maps.MapFragment"
-        
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-    
-    />
-     
-
-    
-    
-</LinearLayout>
-
--->
