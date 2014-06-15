@@ -3,16 +3,20 @@
  */
 package com.bunnybags.cmrlnow;
 
-import android.R.string;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Set;
+
 
 /**
  * @author SURESH
  *
  */
-public class Nearby_Search_Result {
+public class Nearby_Search_Result implements Comparable<Nearby_Search_Result>{
 
 	
 	private String Station_Name;
+	private int Route_id;
 	private Float Distance_from_current;
 	
 	
@@ -55,4 +59,41 @@ public class Nearby_Search_Result {
 		Station_Name = station_Name;
 	}
 
+
+	/**
+	 * @return the route_id
+	 */
+	public int getRoute_id() {
+		return Route_id;
+	}
+
+
+	/**
+	 * @param route_id the route_id to set
+	 */
+	public void setRoute_id(int route_id) {
+		Route_id = route_id;
+	}
+
+
+	@Override
+	public int compareTo(Nearby_Search_Result another) {
+		// TODO Auto-generated method stub
+		return this.Distance_from_current > another.Distance_from_current ? 1 : (this.Distance_from_current < another.Distance_from_current ? -1 : 1);
+	}
+
+	
+	@Override
+	public boolean equals(Object o) 
+	{
+		if(o != null)
+		{
+			Nearby_Search_Result another = (Nearby_Search_Result) o;
+			return this.getStation_Name().equalsIgnoreCase(another.getStation_Name());
+		}
+		else
+		{
+			return false;
+		}
+	}
 }

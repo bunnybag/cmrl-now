@@ -44,9 +44,14 @@ public class Nearby_Search_List_Adapter extends ArrayAdapter<Nearby_Search_Resul
 		this.context = context;
 		this.Resource_Id = resource;
 		this.Nearby_Search_List_Items = new ArrayList<Nearby_Search_Result>();
-		Nearby_Search_List_Items.addAll(objects);
+		if(objects != null)
+		{
+			Nearby_Search_List_Items.addAll(objects);
+		}
 	}
 
+	
+	
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		// TODO Auto-generated method stub

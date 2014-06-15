@@ -24,6 +24,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.location.Location;
 import android.os.Build;
 import android.util.Log;
 
@@ -36,7 +37,7 @@ public class DBHelper extends SQLiteOpenHelper {
      private Context myContext;
      private static String DATABASE_NAME = "CMRL_Database";
      public String DATABASE_PATH = null;
-     public static int DATABASE_VERSION = 1;
+     public static int DATABASE_VERSION = 2;
      
 
      //Constructor
@@ -553,6 +554,67 @@ public class DBHelper extends SQLiteOpenHelper {
 	   	 db.close();
 	   	 
 	   	 return Station_Position;
+    }
+
+	public Location get_Station_Location_by_Station_Name(String Station_Name)
+    {
+		
+	   	 SQLiteDatabase db = this.getReadableDatabase();
+	   	 
+	   	 Float Latitude= new Float(0);
+	   	 Float Longitude = new Float(0);
+	   	 Boolean valid_location = new Boolean(false);
+	   	 
+	   	 if (Station_Name.contains("'")) 
+	   	 {
+	   		 Station_Name= Station_Name.replaceAll("'", "''");
+	   	 }
+	   	 	   	 
+	   	 String sql = "Select Latitude, Longitude from Station_Index where Station_Name LIKE '%" + Station_Name + "%'";
+	   	 
+	   	 Cursor query_cursor = db.rawQuery(sql, null);
+	   	 
+	   	 Location station_location = new Location("Database");
+	   	 
+	   	 if(query_cursor.moveToFirst())
+	   	 {
+	   		 if(query_cursor.getString(0) != null && query_cursor.getString(1)!=null)
+	   		 {
+	   			 valid_location = true;
+	   			 
+	   			 try
+	   			 {
+		   			 Latitude = Float.parseFloat(query_cursor.getString(0));
+			   		 Longitude = Float.parseFloat(query_cursor.getString(1));
+	   			 }
+	   			 catch (NumberFormatException excep)
+	   			 {
+	   				 valid_location = false;
+	   			 }
+		   		 
+	   			 if(valid_location)
+	   			 {
+			   		 if(Float.isNaN(Latitude) || Float.isNaN(Longitude))
+			   		 {
+				   	   	 valid_location = false;
+			   		 }
+	   			 }
+		   		 
+	   			 if(valid_location)
+	   			 {
+		   			 station_location.setLatitude(Latitude);
+		   			 station_location.setLongitude(Longitude);
+	   			 }
+	   			 
+	   		 }
+	   	 }
+	   	 
+	
+	   	 query_cursor.close();
+	   	 db.close();
+	   	 
+	   	 Location retval = (valid_location)? station_location: null;
+	   	 return retval;
     }
 
 	
