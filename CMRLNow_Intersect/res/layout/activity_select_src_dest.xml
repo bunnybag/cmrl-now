@@ -1,4 +1,5 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -14,32 +15,32 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/Station_Search_Container"
         android:orientation="horizontal" >
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="3"
             android:orientation="vertical" >
-
+			
             <EditText
                 android:id="@+id/Source_Station_Input"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:ems="10"
                 android:hint="@string/Source_Hint_Str" >
-
-                <requestFocus />
+                <requestFocus android:layout_width="wrap_content" />
             </EditText>
-
             <EditText
                 android:id="@+id/Dest_Station_Input"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:cursorVisible="true"
                 android:ems="10"
-                android:hint="@string/Dest_Hint_Str" />
+                android:hint="@string/Dest_Hint_Str" >
+        	</EditText>
         </LinearLayout>
 
         <Button
@@ -48,7 +49,6 @@
             android:layout_width="wrap_content"
             android:layout_height="90dp"
             android:layout_gravity="center_vertical|end"
-            
             android:text="@string/Get_Route_Button_Str" />
 
     </LinearLayout>
@@ -56,20 +56,19 @@
     <ListView
         android:id="@+id/Filtered_Station_List"
         android:layout_width="match_parent"
-        android:layout_height="298dp"
+		android:layout_below="@+id/Station_Search_Container"
+		android:layout_above="@+id/Nav_Drawer"
+        android:layout_height="match_parent"
         android:layout_marginTop="16dp"
         android:drawSelectorOnTop="true"
         android:fastScrollEnabled="true" >
     </ListView>
 
     <LinearLayout
+        android:id="@+id/Nav_Drawer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="38dp" >
+        android:layout_height="40dp" 
+        android:layout_alignParentBottom="true" >
 
         <Button
             android:id="@+id/Station_Search_Button"
@@ -78,7 +77,7 @@
             android:layout_height="match_parent"
             android:layout_weight="0.25"
             android:layout_gravity="bottom|end"
-            android:text="Station" />
+            android:text="Route" />
 
         <Button
             android:id="@+id/MapViewButton"
@@ -99,14 +98,13 @@
             android:text="Nearby" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/Station_List"
             style="?android:attr/buttonStyleSmall"
             android:layout_width="52dp"
             android:layout_height="match_parent"
             android:layout_weight="0.25"
             android:layout_gravity="bottom"
-            android:text="Button" />
+            android:text="Stations" />
 
     </LinearLayout>
-
-</LinearLayout>
+</RelativeLayout>
