@@ -17,6 +17,7 @@ import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 //import com.google.android.gms.maps.GoogleMap;
 //import com.google.android.maps.MapActivity;
@@ -37,6 +38,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v4.app.FragmentActivity;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -57,6 +59,7 @@ public class Nearby_Station_Search extends Activity implements LocationListener{
 	Marker current_position_marker;
 	List<Marker> Nearest_Station_Marker;
 	public Nearby_Station_Search nearby_activity = this;
+	//private PolylineOptions Route_Current_Nearest;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +82,10 @@ public class Nearby_Station_Search extends Activity implements LocationListener{
             	Nearby_Search_Google_Map = ((MapFragment) getFragmentManager().findFragmentById(R.id.nearby_search_google_map_view)).getMap();
             	googleMap = Nearby_Search_Google_Map;
             }
+		    
+		    
+		    googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(13.0339542,80.2069541), 16));
+		    
 		    Nearby_Search_Google_Map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 		    Nearby_Search_Google_Map.setMyLocationEnabled(true);
 		    Nearby_Search_Google_Map.setTrafficEnabled(true);
@@ -143,7 +150,7 @@ public class Nearby_Station_Search extends Activity implements LocationListener{
 
 		}
 		
-		/*locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10000, 0, this);*/
+		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10000, 0, this);
 		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 0, this);
 		
 	}
@@ -252,11 +259,14 @@ public class Nearby_Station_Search extends Activity implements LocationListener{
 		
 		Toast.makeText(getApplicationContext(),"Location received from " + arg0.getProvider(),Toast.LENGTH_SHORT).show();
 		
-		ListView Nearby_Staion_Result_List = (ListView) findViewById(R.id.Nearby_Station_Search_Summary_ListView);
-		List<Nearby_Search_Result> neaby_search_result_list;
-		neaby_search_result_list = Get_Nearest_Station_List_To_Location(arg0);
 		
-		Nearby_Search_List_Adapter nearby_station_summary_adapter = new Nearby_Search_List_Adapter(this, R.layout.nearest_station_search_list_item_layout, neaby_search_result_list);
+		//googleMap.clear();
+		
+		ListView Nearby_Staion_Result_List = (ListView) findViewById(R.id.Nearby_Station_Search_Summary_ListView);
+		List<Nearby_Search_Result> nearby_search_result_list;
+		nearby_search_result_list = Get_Nearest_Station_List_To_Location(arg0);
+		
+		Nearby_Search_List_Adapter nearby_station_summary_adapter = new Nearby_Search_List_Adapter(this, R.layout.nearest_station_search_list_item_layout, nearby_search_result_list);
 		
 		nearby_station_summary_adapter.setDropDownViewResource(R.layout.nearest_station_search_list_item_layout);
 		Nearby_Staion_Result_List.setAdapter(nearby_station_summary_adapter);
@@ -282,24 +292,45 @@ public class Nearby_Station_Search extends Activity implements LocationListener{
 			current_position_marker.setPosition(Current_Lat_Lng);
 		}
 		
-		for (Nearby_Search_Result nearby_Search_Result : neaby_search_result_list) 
+		for (Nearby_Search_Result nearby_Search_Result : nearby_search_result_list) 
 		{
 			station_name = nearby_Search_Result.getStation_Name();
 			Location station_location = db_helper.get_Station_Location_by_Station_Name(station_name);
 			Marker nearest_station_marker = googleMap.addMarker(new MarkerOptions().position(new LatLng(station_location.getLatitude(), station_location.getLongitude())).title(station_name));
 			Nearest_Station_Marker.add(nearest_station_marker);
 		}
+		
+		
+		/*PolylineOptions Route_Current_Nearest = new PolylineOptions(); 
+		
+		
+		Route_Current_Nearest.add(Current_Lat_Lng);
+		station_name = nearby_search_result_list.get(0).getStation_Name();
+		Location station_location = db_helper.get_Station_Location_by_Station_Name(station_name);
+		Route_Current_Nearest.add(new LatLng(station_location.getLatitude(), station_location.getLongitude()));
+		
+		Route_Current_Nearest.width(2);
+		Route_Current_Nearest.color(Color.RED);
+		
+		googleMap.addPolyline(Route_Current_Nearest);*/
 
 	}
 
 	@Override
 	public void onProviderDisabled(String arg0) {
-		Toast.makeText(getApplicationContext(),"GPS disabled. Enable for better location updates",Toast.LENGTH_SHORT).show();
+		
+		if(arg0.equalsIgnoreCase("gps"))
+		{
+			Toast.makeText(getApplicationContext(),"GPS disabled. Enable for better location updates",Toast.LENGTH_SHORT).show();
+		}
 	}
 
 	@Override
 	public void onProviderEnabled(String arg0) {
-		Toast.makeText(getApplicationContext(),"GPS enabled",Toast.LENGTH_SHORT).show();
+		if(arg0.equalsIgnoreCase("gps"))
+		{
+			Toast.makeText(getApplicationContext(),"GPS enabled",Toast.LENGTH_SHORT).show();
+		}
 	}
 
 	@Override
