@@ -4,116 +4,107 @@
     android:versionCode="1"
     android:versionName="1.0" >
 
-    
     <uses-feature
         android:glEsVersion="0x00020000"
-        android:required="true"/>
-    
+        android:required="true" />
+
     <uses-sdk
         android:minSdkVersion="11"
         android:targetSdkVersion="18" />
-    
-    <uses-permission android:maxSdkVersion="19" android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="com.example.googlemaps.permission.MAPS_RECEIVE"/>
-    
+
+    <uses-permission
+        android:name="android.permission.ACCESS_FINE_LOCATION"
+        android:maxSdkVersion="19" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="com.example.googlemaps.permission.MAPS_RECEIVE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-	<uses-permission android:name="android.permission.INTERNET" />
-	<uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
-	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-	
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
-		android:label="@string/app_name" >
-        
+        android:label="@string/app_name" >
         <activity
-            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"
-            android:name="com.bunnybags.cmrlnow.Splash_Activity">
+            android:name="com.bunnybags.cmrlnow.Splash_Activity"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
-        
-        
         <activity
-            android:icon="@drawable/ic_launcher"
             android:name="com.bunnybags.cmrlnow.Select_Src_Dest_List"
-            android:theme="@style/AppTheme"
-            android:label="Search Station" >
+            android:icon="@drawable/ic_launcher"
+            android:label="Search Station"
+            android:theme="@style/AppTheme" >
         </activity>
-        
         <activity
-            android:theme="@style/AppTheme"
             android:name="com.bunnybags.cmrlnow.Route_Suggestions_List"
             android:label="@string/title_activity_train__timings"
-            android:parentActivityName="com.bunnybags.cmrlnow.Select_Src_Dest_List" >
+            android:parentActivityName="com.bunnybags.cmrlnow.Select_Src_Dest_List"
+            android:theme="@style/AppTheme" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.bunnybags.cmrlnow.Route_Explorer" />
         </activity>
         <activity
-            android:theme="@style/AppTheme"
             android:name="com.bunnybags.cmrlnow.Route_Suggestion_Map"
             android:label="@string/title_activity_map_view"
-            android:parentActivityName="com.bunnybags.cmrlnow.Route_Suggestions_List" >
+            android:parentActivityName="com.bunnybags.cmrlnow.Route_Suggestions_List"
+            android:theme="@style/AppTheme" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.bunnybags.cmrlnow.Train_Timings" />
         </activity>
         <activity
-            android:theme="@style/AppTheme"
             android:name="com.bunnybags.cmrlnow.TabPanelActivity"
             android:label="@string/title_activity_tab_panel"
-            android:parentActivityName="com.bunnybags.cmrlnow.Select_Src_Dest_List" >
+            android:parentActivityName="com.bunnybags.cmrlnow.Select_Src_Dest_List"
+            android:theme="@style/AppTheme" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.bunnybags.cmrlnow.Search_Src_Dest" />
         </activity>
         <activity
-            android:theme="@style/AppTheme"
             android:name="com.bunnybags.cmrlnow.Result_Detail_List"
-            android:label="@string/title_activity_result__detail__list" >
+            android:label="@string/title_activity_result__detail__list"
+            android:theme="@style/AppTheme" >
         </activity>
         <activity
-            
-            android:theme="@style/AppTheme"
             android:name="com.bunnybags.cmrlnow.Route_Details_List_Activity"
             android:label="@string/title_activity_route__details__list_"
-            android:parentActivityName="com.bunnybags.cmrlnow.Route_Suggestions_List" >
+            android:parentActivityName="com.bunnybags.cmrlnow.Route_Suggestions_List"
+            android:theme="@style/AppTheme" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.bunnybags.cmrlnow.Route_Suggestions_List" />
         </activity>
         <activity
-            android:theme="@style/AppTheme"
             android:name="com.bunnybags.cmrlnow.Station_Details_Activity"
-            android:label="@string/title_activity_station__details_" >
+            android:label="@string/title_activity_station__details_"
+            android:theme="@style/AppTheme" >
         </activity>
         <activity
-            android:theme="@style/AppTheme"
             android:name="com.bunnybags.cmrlnow.Nearby_Station_Search"
-            android:label="@string/title_activity_nearby__station__search" >
+            android:label="@string/title_activity_nearby__station__search"
+            android:theme="@style/AppTheme" >
         </activity>
-        
+
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-    		android:value="AIzaSyCyWILr1NOJJmFiFkXCUpgZIPaXwLE0jIk"
-            />
-        
-        <meta-data 
+            android:value="AIzaSyCyWILr1NOJJmFiFkXCUpgZIPaXwLE0jIk" />
+        <meta-data
             android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version"
-            />
-        
-        
-</application>
+            android:value="@integer/google_play_services_version" />
 
-    
-    
+        <activity
+            android:name="com.bunnybags.cmrlnow.MapSelect"
+            android:label="@string/title_activity_map_select"
+			android:theme="@style/AppTheme" >
+        </activity>
+    </application>
+
 </manifest>

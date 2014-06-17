@@ -1,6 +1,5 @@
 package com.bunnybags.cmrlnow;
 
-import java.io.IOException;
 import java.util.List;
 
 import android.app.Activity;
@@ -10,7 +9,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.View;
-import android.view.Window;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.widget.AbsListView;
@@ -147,7 +145,11 @@ public class Select_Src_Dest_List extends Activity{
 			}
 		});
 		
+		// Button Definitions
+		
 		Button Get_Route_Button = (Button) findViewById(R.id.Get_Route_Button);
+		Button Map_View_Button = (Button) findViewById(R.id.MapViewButton);
+		Button Station_List_Button = (Button) findViewById(R.id.Station_List);
 		
 		Get_Route_Button.setOnClickListener(new OnClickListener() {
 			
@@ -163,14 +165,10 @@ public class Select_Src_Dest_List extends Activity{
 			@Override
 			public void onClick(View arg0) {
 				//Bundle nearby_station = new Bundle();
-				
-				Intent nearby_station_search = new Intent();
-				nearby_station_search.setClass(getApplicationContext(), Nearby_Station_Search.class);
+				Intent nearby_station_search = new Intent(getApplicationContext(), Nearby_Station_Search.class);
 				startActivity(nearby_station_search);
 			}
 		});
-		
-		Button Map_View_Button = (Button) findViewById(R.id.MapViewButton);
 		
 		Map_View_Button.setOnClickListener(new OnClickListener() {
 			
@@ -182,9 +180,17 @@ public class Select_Src_Dest_List extends Activity{
 				return;
 			}
 		});
-
 		
-		
+		Station_List_Button.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				Intent map_select = new Intent(getApplicationContext(),MapSelect.class);
+				// TODO Auto-generated method stub
+				startActivity(map_select);
+				return;
+			}
+		});
 }
 
 	protected void Show_Route_Information() {
