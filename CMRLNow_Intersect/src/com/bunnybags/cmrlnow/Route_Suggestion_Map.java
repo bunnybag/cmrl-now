@@ -25,6 +25,8 @@ import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
+import android.view.ScaleGestureDetector.OnScaleGestureListener;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
@@ -44,6 +46,8 @@ public class Route_Suggestion_Map extends Search_Route {
 	private int selected_dest_point_X;
 	private int selected_dest_point_Y;
 	private Drawable CMRL_Drawable;
+	private ImageView CMRLMapView;
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -61,13 +65,13 @@ public class Route_Suggestion_Map extends Search_Route {
 		
 		setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		
-		final ImageView CMRLMapView = (ImageView) findViewById(R.id.Route_Map);
+		CMRLMapView = (ImageView) findViewById(R.id.Route_Map);
 		//String imagePath = Environment.getExternalStorageDirectory().toString() + "/CMRL.jpg";
 		String hard_path = "/storage/sdcard1/CMRL.jpg";
 		//String datapath = Environment.getDataDirectory().toString();
 		//String dataitem = getApplicationContext().getFilesDir().getPath();
 		setupActionBar();
-		
+
 	
 		try {
 			this.CMRL_Drawable = Drawable.createFromStream(getAssets().open("CMRL.jpg"), null);
@@ -557,5 +561,7 @@ public class Route_Suggestion_Map extends Search_Route {
 		}
 		return super.onOptionsItemSelected(item);
 	}
-
+	
 }
+
+

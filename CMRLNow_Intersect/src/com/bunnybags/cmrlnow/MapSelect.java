@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.ScaleGestureDetector;
 import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 import android.widget.TextView;
 import android.view.MotionEvent;
 
@@ -22,7 +23,9 @@ public class MapSelect extends Activity {
 		setContentView(R.layout.activity_map_select);
 		img = (ImageView)findViewById(R.id.line_map);
 		txt = (TextView)findViewById(R.id.test_text);
+	
 		
+		img.setScaleType(ScaleType.MATRIX);
 		SGD = new ScaleGestureDetector(this,new ScaleListener());
 	}
 
