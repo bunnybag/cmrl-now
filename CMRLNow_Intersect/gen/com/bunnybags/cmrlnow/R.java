@@ -513,6 +513,7 @@ containing a value of this type.
     public static final class string {
         public static final int Dest_Hint_Str=0x7f040025;
         public static final int Dest_Station_Bundle_Key_Str=0x7f040028;
+        public static final int GMap_API_Key=0x7f040031;
         public static final int Get_Route_Button_Str=0x7f040026;
         public static final int Source_Hint_Str=0x7f040024;
         public static final int Src_Station_Bundle_Key_Str=0x7f040027;

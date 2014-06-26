@@ -18,5 +18,5 @@
     <string name="title_activity_station__details_">Station Details</string>
     <string name="title_activity_nearby__station__search">Stations Nearby</string>
     <string name="title_activity_map_select">Route Select Map</string>
-
+    <string name="GMap_API_Key">AIzaSyCyWILr1NOJJmFiFkXCUpgZIPaXwLE0jIk</string>
 </resources>

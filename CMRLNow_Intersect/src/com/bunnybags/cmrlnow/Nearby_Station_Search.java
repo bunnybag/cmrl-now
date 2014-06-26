@@ -9,6 +9,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 //import com.google.android.gms.maps.GoogleMap;
@@ -71,7 +75,7 @@ public class Nearby_Station_Search extends Activity implements LocationListener{
 		Location Last_Known_Location;
 		
 		Application_Context = getApplicationContext();
-		update_nearby_station = true;
+		update_nearby_station = false;
 		current_position_marker = null;
 		Nearest_Station_Marker = new ArrayList<Marker>();
 		
@@ -137,6 +141,10 @@ public class Nearby_Station_Search extends Activity implements LocationListener{
 			alertdialog.show();
  
 		}
+		else
+		{
+			update_nearby_station  = true;
+		}
 		
 		Last_Known_Location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 		if(Last_Known_Location != null)
@@ -151,6 +159,7 @@ public class Nearby_Station_Search extends Activity implements LocationListener{
 		}
 		
 		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10000, 0, this);
+		//locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, this,null);
 		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 0, this);
 		
 	}
@@ -183,7 +192,18 @@ public class Nearby_Station_Search extends Activity implements LocationListener{
 				{
 					station_distance = test_location.distanceTo(station_location);
 					
-					if(station_distance <= least_distance)
+					CMRL_GMap_Direction md = new CMRL_GMap_Direction();
+
+					Document doc = md.getDocument(new LatLng(test_location.getLatitude(),test_location.getLongitude()), new LatLng(station_location.getLatitude(),station_location.getLongitude()), CMRL_GMap_Direction.MODE_DRIVING);
+					//ArrayList<LatLng> directionPoint = md.getDirection(doc);
+					station_distance = md.getDistanceValue(doc);
+					
+					/*NodeList node1 = (NodeList) nodes.item(getNodeIndex(nodes, "route"));
+					node1 = (NodeList) node1.item(getNodeIndex(nodes, "leg"));
+			        NodeList nl2 = node1.getChildNodes();
+			        Node node2 = nl2.item(getNodeIndex(nl2, "text"));*/
+					
+					//if(station_distance <= least_distance)
 					{
 						least_distance = station_distance;
 						Nearby_Search_Result nearby_station = new Nearby_Search_Result();
@@ -192,7 +212,7 @@ public class Nearby_Station_Search extends Activity implements LocationListener{
 						nearby_station.setRoute_id(current_route_id);
 						
 						
-						if(nearby_station_search_result_list.size()!=0)
+						/*if(nearby_station_search_result_list.size()!=0)
 						{
 							if(current_route_id == nearby_station_search_result_list.get(nearby_station_search_result_list.size()-1).getRoute_id() || station_name.equalsIgnoreCase(nearby_station_search_result_list.get(nearby_station_search_result_list.size()-1).getStation_Name()))
 							{
@@ -201,9 +221,9 @@ public class Nearby_Station_Search extends Activity implements LocationListener{
 						}
 						
 						if(!nearby_station_search_result_list.contains(nearby_station))
-						{
+						{*/
 							nearby_station_search_result_list.add(nearby_station);
-						}
+						//}
 						
 					}
 				}
@@ -213,6 +233,14 @@ public class Nearby_Station_Search extends Activity implements LocationListener{
 		
 		Collections.sort(nearby_station_search_result_list);
 		return nearby_station_search_result_list;
+	}
+
+	private int getNodeIndex(NodeList nl, String string) {
+		for(int i = 0 ; i < nl.getLength() ; i++) {
+            if(nl.item(i).getNodeName().equals(string))
+                return i;
+        }
+        return -1;
 	}
 
 	@Override
@@ -254,6 +282,13 @@ public class Nearby_Station_Search extends Activity implements LocationListener{
 	public void onLocationChanged(Location arg0) {
 		// TODO Auto-generated method stub
 
+		if(!update_nearby_station)
+		{
+			this.location_manager.removeUpdates(this);
+			return;
+		}
+		
+		
 		String station_name;
 		DBHelper db_helper = new DBHelper(Application_Context);
 		
@@ -313,6 +348,7 @@ public class Nearby_Station_Search extends Activity implements LocationListener{
 		Route_Current_Nearest.color(Color.RED);
 		
 		googleMap.addPolyline(Route_Current_Nearest);*/
+		update_nearby_station = false;
 
 	}
 
@@ -330,6 +366,7 @@ public class Nearby_Station_Search extends Activity implements LocationListener{
 		if(arg0.equalsIgnoreCase("gps"))
 		{
 			Toast.makeText(getApplicationContext(),"GPS enabled",Toast.LENGTH_SHORT).show();
+			update_nearby_station  = true;
 		}
 	}
 
