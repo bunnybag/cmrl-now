@@ -435,11 +435,11 @@ containing a value of this type.
         public static final int Nav_Drawer=0x7f060022;
         public static final int Nearby_Station_Button=0x7f060024;
         public static final int Nearby_Station_Search_Summary_ListView=0x7f060027;
-        public static final int Nearby_Station_Search_Summary_Spinner=0x7f060029;
         public static final int Nearest_Station_Details_Button=0x7f06002a;
         public static final int Nearest_Station_Direction_Summary_Text=0x7f06002d;
         public static final int Nearest_Station_Distance_Text=0x7f06002c;
         public static final int Nearest_Station_Name_Text=0x7f06002b;
+        public static final int Nearest_Station_Search_List_Item_Rel_Layout=0x7f060029;
         public static final int Result_Filter_Toggle=0x7f060018;
         public static final int Route_Detail_Station_List_View=0x7f060035;
         public static final int Route_Details_Right_Arrow_Image=0x7f06003b;

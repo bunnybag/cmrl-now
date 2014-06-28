@@ -21,7 +21,9 @@ import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.maps.model.internal.IPolylineDelegate;
 
 //import com.google.android.gms.maps.GoogleMap;
 //import com.google.android.maps.MapActivity;
@@ -50,6 +52,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -68,6 +71,8 @@ public class Nearby_Station_Search extends Activity implements LocationListener{
 	List<Marker> Nearest_Station_Marker;
 	public Nearby_Station_Search nearby_activity = this;
 	//private PolylineOptions Route_Current_Nearest;
+	private List<Nearby_Search_Result> nearby_search_result_list;
+	private Polyline Nearest_Station_Polyline;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -83,15 +88,27 @@ public class Nearby_Station_Search extends Activity implements LocationListener{
 		current_position_marker = null;
 		Nearest_Station_Marker = new ArrayList<Marker>();
 
-		Spinner Nearby_Station_Spinner = (Spinner) findViewById(R.id.Nearby_Station_Search_Summary_Spinner);
+
+		ListView Nearby_Staion_Result_List = (ListView) findViewById(R.id.Nearby_Station_Search_Summary_ListView);
 		
-		Nearby_Station_Spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+		Nearby_Staion_Result_List.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+		
+		Nearby_Staion_Result_List.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 			@Override
-			public void onItemSelected(AdapterView<?> arg0, View arg1,
-					int arg2, long arg3) {
-				// TODO Auto-generated method stub
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+					long arg3) {
+				Toast.makeText(getApplicationContext(),"item clicked",Toast.LENGTH_SHORT).show();
+					return;
+			}
+		});
+		Nearby_Staion_Result_List.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View arg1,
+					int position, long arg3) {
 				return;
+				
 			}
 
 			@Override
@@ -99,9 +116,7 @@ public class Nearby_Station_Search extends Activity implements LocationListener{
 				// TODO Auto-generated method stub
 				return;
 			}
-		});
-		
-		
+		});		
 		
 		try 
 		{
@@ -325,7 +340,6 @@ public class Nearby_Station_Search extends Activity implements LocationListener{
 		//googleMap.clear();
 		
 		ListView Nearby_Staion_Result_List = (ListView) findViewById(R.id.Nearby_Station_Search_Summary_ListView);
-		Spinner Nearby_Station_Spinner = (Spinner) findViewById(R.id.Nearby_Station_Search_Summary_Spinner);
 		
 		List<Nearby_Search_Result> nearby_search_result_list;
 
@@ -354,13 +368,13 @@ public class Nearby_Station_Search extends Activity implements LocationListener{
 		
 		nearby_search_result_list = Get_Nearest_Station_List_To_Location(arg0);
 		
+		this.nearby_search_result_list = nearby_search_result_list;
+		
 		Nearby_Search_List_Adapter nearby_station_summary_adapter = new Nearby_Search_List_Adapter(this, R.layout.nearest_station_search_list_item_layout, nearby_search_result_list);
 		
 		nearby_station_summary_adapter.setDropDownViewResource(R.layout.nearest_station_search_list_item_layout);
 		Nearby_Staion_Result_List.setAdapter(nearby_station_summary_adapter);
 		
-		Nearby_Station_Spinner.setAdapter(nearby_station_summary_adapter);
-
 		for (Nearby_Search_Result nearby_Search_Result : nearby_search_result_list) 
 		{
 			station_name = nearby_Search_Result.getStation_Name();
@@ -371,8 +385,10 @@ public class Nearby_Station_Search extends Activity implements LocationListener{
 			Route_Current_Nearest.addAll(nearby_Search_Result.getDirection_Point());
 			Route_Current_Nearest.width(2);
 			Route_Current_Nearest.color(Color.RED);
-			googleMap.addPolyline(Route_Current_Nearest);
+			this.setNearest_Station_Polyline(googleMap.addPolyline(Route_Current_Nearest));
+			break;
 		}
+		
 		
 		
 		/*PolylineOptions Route_Current_Nearest = new PolylineOptions(); 
@@ -413,6 +429,23 @@ public class Nearby_Station_Search extends Activity implements LocationListener{
 	public void onStatusChanged(String arg0, int arg1, Bundle arg2) {
 		Toast.makeText(getApplicationContext(),"Status changed",Toast.LENGTH_SHORT).show();
 	}
+
+	/**
+	 * @return the nearest_Station_Polyline
+	 */
+	public Polyline getNearest_Station_Polyline() {
+		return Nearest_Station_Polyline;
+	}
+
+	/**
+	 * @param nearest_Station_Polyline the nearest_Station_Polyline to set
+	 */
+	public void setNearest_Station_Polyline(Polyline nearest_Station_Polyline) {
+		Nearest_Station_Polyline = nearest_Station_Polyline;
+	}
+
+
+
 
 	
 }

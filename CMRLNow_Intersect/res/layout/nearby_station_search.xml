@@ -13,7 +13,9 @@
 	     android:layout_width="match_parent"
 	     android:layout_height="100dp"
 	     android:layout_alignLeft="@+id/nearby_search_google_map_view"
-	     android:layout_alignParentTop="true" >
+	     android:layout_alignParentTop="true"
+	     android:drawSelectorOnTop="true"
+         android:fastScrollEnabled="true" >
 	 </ListView>
     
 	 <fragment
@@ -27,12 +29,6 @@
 	     android:layout_marginEnd="0dp"
 	     android:layout_marginRight="0dp" />
 
-	 <Spinner
-	     android:id="@+id/Nearby_Station_Search_Summary_Spinner"
-	     android:layout_width="wrap_content"
-	     android:layout_height="wrap_content"
-	     android:layout_alignLeft="@+id/Nearby_Station_Search_Summary_ListView"
-	     android:layout_below="@+id/Nearby_Station_Search_Summary_ListView" />
 
 </RelativeLayout> 
  
