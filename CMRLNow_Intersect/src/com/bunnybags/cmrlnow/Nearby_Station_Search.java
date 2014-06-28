@@ -40,6 +40,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.TabActivity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -58,10 +59,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.MultiAutoCompleteTextView.CommaTokenizer;
 import android.widget.Spinner;
+import android.widget.TabHost;
+import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class Nearby_Station_Search extends Activity implements LocationListener{
+public class Nearby_Station_Search extends TabActivity implements LocationListener{
 
 	private LocationManager location_manager;
 	GoogleMap googleMap;
@@ -93,30 +96,20 @@ public class Nearby_Station_Search extends Activity implements LocationListener{
 		
 		Nearby_Staion_Result_List.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 		
-		Nearby_Staion_Result_List.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-					long arg3) {
-				Toast.makeText(getApplicationContext(),"item clicked",Toast.LENGTH_SHORT).show();
-					return;
-			}
-		});
-		Nearby_Staion_Result_List.setOnItemSelectedListener(new OnItemSelectedListener() {
-
-			@Override
-			public void onItemSelected(AdapterView<?> parent, View arg1,
-					int position, long arg3) {
-				return;
+		
+		TabHost tabHost = (TabHost)findViewById(android.R.id.tabhost);
+		TabSpec	spec = tabHost.newTabSpec("Station_List");
+		spec.setIndicator("List");
+		spec.setContent(R.id.tab1);
+		tabHost.addTab(spec);
+		
+		TabSpec	spec2 = tabHost.newTabSpec("Map_View");
+		spec2.setIndicator("Map");
+		spec2.setContent(R.id.tab2);
+		tabHost.addTab(spec2);
+		
+		
 				
-			}
-
-			@Override
-			public void onNothingSelected(AdapterView<?> arg0) {
-				// TODO Auto-generated method stub
-				return;
-			}
-		});		
 		
 		try 
 		{
@@ -198,7 +191,6 @@ public class Nearby_Station_Search extends Activity implements LocationListener{
 		}
 		
 		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10000, 0, this);
-		//locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, this,null);
 		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 0, this);
 		
 	}
@@ -260,12 +252,12 @@ public class Nearby_Station_Search extends Activity implements LocationListener{
 							{
 								nearby_station_search_result_list.remove(nearby_station_search_result_list.size()-1);
 							}
-						}
+						}*/
 						
 						if(!nearby_station_search_result_list.contains(nearby_station))
-						{*/
+						{
 							nearby_station_search_result_list.add(nearby_station);
-						//}
+						}
 						
 					}
 				}
@@ -383,8 +375,8 @@ public class Nearby_Station_Search extends Activity implements LocationListener{
 			Nearest_Station_Marker.add(nearest_station_marker);
 			PolylineOptions Route_Current_Nearest = new PolylineOptions(); 
 			Route_Current_Nearest.addAll(nearby_Search_Result.getDirection_Point());
-			Route_Current_Nearest.width(2);
-			Route_Current_Nearest.color(Color.RED);
+			Route_Current_Nearest.width(8);
+			Route_Current_Nearest.color(Color.BLUE);
 			this.setNearest_Station_Polyline(googleMap.addPolyline(Route_Current_Nearest));
 			break;
 		}
@@ -404,7 +396,8 @@ public class Nearby_Station_Search extends Activity implements LocationListener{
 		
 		googleMap.addPolyline(Route_Current_Nearest);*/
 		update_nearby_station = false;
-
+		
+		
 	}
 
 	@Override

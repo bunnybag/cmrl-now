@@ -7,28 +7,64 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".Nearby_Station_Search" >
-    
-    <ListView
-	     android:id="@+id/Nearby_Station_Search_Summary_ListView"
-	     android:layout_width="match_parent"
-	     android:layout_height="100dp"
-	     android:layout_alignLeft="@+id/nearby_search_google_map_view"
-	     android:layout_alignParentTop="true"
-	     android:drawSelectorOnTop="true"
-         android:fastScrollEnabled="true" >
-	 </ListView>
-    
-	 <fragment
-	     android:id="@+id/nearby_search_google_map_view"
-	     android:name="com.google.android.gms.maps.MapFragment"
-	     android:layout_width="match_parent"
-	     android:layout_height="250dp"
-	     android:layout_alignParentBottom="true"
-	     android:layout_alignParentLeft="true"
-	     android:layout_alignParentRight="true"
-	     android:layout_marginEnd="0dp"
-	     android:layout_marginRight="0dp" />
 
+    <TabHost
+        android:id="@android:id/tabhost"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:visibility="visible" >
 
-</RelativeLayout> 
- 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <TabWidget
+                android:id="@android:id/tabs"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:tabStripEnabled="true" >
+
+            </TabWidget>
+
+            <FrameLayout
+                android:id="@android:id/tabcontent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
+                <LinearLayout
+                    android:id="@+id/tab1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" >
+
+                    <ListView
+                        android:id="@+id/Nearby_Station_Search_Summary_ListView"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:drawSelectorOnTop="true"
+                        android:fastScrollEnabled="true" >
+                    </ListView>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/tab2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" >
+
+                    <fragment
+                        android:id="@+id/nearby_search_google_map_view"
+                        android:name="com.google.android.gms.maps.MapFragment"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="0dp"
+                        android:layout_marginRight="0dp" />
+                </LinearLayout>
+            </FrameLayout>
+
+        </LinearLayout>
+    </TabHost>
+
+</RelativeLayout>

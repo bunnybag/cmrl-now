@@ -37,7 +37,7 @@ public class DBHelper extends SQLiteOpenHelper {
      private Context myContext;
      private static String DATABASE_NAME = "CMRL_Database";
      public String DATABASE_PATH = null;
-     public static int DATABASE_VERSION = 6;
+     public static int DATABASE_VERSION = 7;
      
 
      //Constructor
@@ -570,7 +570,7 @@ public class DBHelper extends SQLiteOpenHelper {
 	   		 Station_Name= Station_Name.replaceAll("'", "''");
 	   	 }
 	   	 	   	 
-	   	 String sql = "Select Latitude, Longitude from Station_Index where Station_Name LIKE '%" + Station_Name + "%'";
+	   	 String sql = "Select Latitude, Longitude,Service_Status from Station_Index where Station_Name LIKE '%" + Station_Name + "%'";
 	   	 
 	   	 Cursor query_cursor = db.rawQuery(sql, null);
 	   	 
@@ -578,34 +578,41 @@ public class DBHelper extends SQLiteOpenHelper {
 	   	 
 	   	 if(query_cursor.moveToFirst())
 	   	 {
-	   		 if(query_cursor.getString(0) != null && query_cursor.getString(1)!=null)
+	   		 if(query_cursor.getString(2).equalsIgnoreCase("ACTIVE"))
 	   		 {
-	   			 valid_location = true;
-	   			 
-	   			 try
-	   			 {
-		   			 Latitude = Float.parseFloat(query_cursor.getString(0));
-			   		 Longitude = Float.parseFloat(query_cursor.getString(1));
-	   			 }
-	   			 catch (NumberFormatException excep)
-	   			 {
-	   				 valid_location = false;
-	   			 }
-		   		 
-	   			 if(valid_location)
-	   			 {
-			   		 if(Float.isNaN(Latitude) || Float.isNaN(Longitude))
-			   		 {
-				   	   	 valid_location = false;
-			   		 }
-	   			 }
-		   		 
-	   			 if(valid_location)
-	   			 {
-		   			 station_location.setLatitude(Latitude);
-		   			 station_location.setLongitude(Longitude);
-	   			 }
-	   			 
+		   		 if(query_cursor.getString(0) != null && query_cursor.getString(1)!=null)
+		   		 {
+		   			 valid_location = true;
+		   			 
+		   			 try
+		   			 {
+			   			 Latitude = Float.parseFloat(query_cursor.getString(0));
+				   		 Longitude = Float.parseFloat(query_cursor.getString(1));
+		   			 }
+		   			 catch (NumberFormatException excep)
+		   			 {
+		   				 valid_location = false;
+		   			 }
+			   		 
+		   			 if(valid_location)
+		   			 {
+				   		 if(Float.isNaN(Latitude) || Float.isNaN(Longitude))
+				   		 {
+					   	   	 valid_location = false;
+				   		 }
+		   			 }
+			   		 
+		   			 if(valid_location)
+		   			 {
+			   			 station_location.setLatitude(Latitude);
+			   			 station_location.setLongitude(Longitude);
+		   			 }
+		   			 
+		   		 }
+	   		 }
+	   		 else
+	   		 {
+	   			valid_location = false;
 	   		 }
 	   	 }
 	   	 

@@ -32,6 +32,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
+import android.widget.TabHost;
 import android.widget.TextView;
 
 /**
@@ -116,9 +117,12 @@ public class Nearby_Search_List_Adapter extends ArrayAdapter<Nearby_Search_Resul
 				activity.Nearest_Station_Marker.add(nearest_station_marker);
 				PolylineOptions Route_Current_Nearest = new PolylineOptions(); 
 				Route_Current_Nearest.addAll(nearby_station.getDirection_Point());
-				Route_Current_Nearest.width(2);
-				Route_Current_Nearest.color(Color.RED);
+				Route_Current_Nearest.width(8);
+				Route_Current_Nearest.color(Color.BLUE);
 				activity.setNearest_Station_Polyline(activity.googleMap.addPolyline(Route_Current_Nearest));
+				
+				TabHost tabHost = (TabHost) activity.findViewById(android.R.id.tabhost);
+				tabHost.setCurrentTabByTag("Map_View");
 				
 			}
 
