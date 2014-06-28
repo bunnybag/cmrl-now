@@ -5,8 +5,8 @@
 
     <ImageButton
         android:id="@+id/Nearest_Station_Details_Button"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:layout_width="40dp"
+        android:layout_height="75dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
@@ -16,9 +16,10 @@
         android:id="@+id/Nearest_Station_Name_Text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/Nearest_Station_Details_Button"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
         android:layout_marginLeft="14dp"
+        android:layout_marginTop="15dp"
         android:text="Station"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -26,10 +27,19 @@
         android:id="@+id/Nearest_Station_Distance_Text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/Nearest_Station_Details_Button"
-        android:layout_marginRight="48dp"
+        android:layout_alignTop="@+id/Nearest_Station_Name_Text"
+        android:layout_marginRight="47dp"
         android:layout_toLeftOf="@+id/Nearest_Station_Details_Button"
         android:text="Kms"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <TextView
+        android:id="@+id/Nearest_Station_Direction_Summary_Text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/Nearest_Station_Details_Button"
+        android:layout_alignLeft="@+id/Nearest_Station_Name_Text"
+        android:text="Direction Sumary"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
 </RelativeLayout>

@@ -19,13 +19,14 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
 /**
  * @author SURESH
  *
  */
-public class Nearby_Search_List_Adapter extends ArrayAdapter<Nearby_Search_Result> {
+public class Nearby_Search_List_Adapter extends ArrayAdapter<Nearby_Search_Result> implements SpinnerAdapter {
 
 	private Context context;
 	private int Resource_Id;
@@ -70,9 +71,11 @@ public class Nearby_Search_List_Adapter extends ArrayAdapter<Nearby_Search_Resul
 		
 		ImageButton station_details_button_view = (ImageButton) row.findViewById(R.id.Nearest_Station_Details_Button);
 		TextView Station_Name = (TextView) row.findViewById(R.id.Nearest_Station_Name_Text);
+		TextView Station_Direction_Summary = (TextView) row.findViewById(R.id.Nearest_Station_Direction_Summary_Text);
 		
 		
 		Station_Name.setText(nearby_search_current_item.getStation_Name());
+		Station_Direction_Summary.setText(nearby_search_current_item.getDirection_Summary());
 		
 		TextView Distance_from_here = (TextView) row.findViewById(R.id.Nearest_Station_Distance_Text);
 		Distance_from_here.setText(Float.toString(nearby_search_current_item.getDistance_from_current()) + "km" );

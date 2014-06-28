@@ -37,7 +37,7 @@ public class DBHelper extends SQLiteOpenHelper {
      private Context myContext;
      private static String DATABASE_NAME = "CMRL_Database";
      public String DATABASE_PATH = null;
-     public static int DATABASE_VERSION = 5;
+     public static int DATABASE_VERSION = 6;
      
 
      //Constructor

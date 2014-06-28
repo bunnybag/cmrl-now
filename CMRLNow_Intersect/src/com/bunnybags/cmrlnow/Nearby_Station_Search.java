@@ -46,11 +46,15 @@ import android.graphics.Color;
 import android.support.v4.app.FragmentActivity;
 import android.view.KeyEvent;
 import android.view.Menu;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.MultiAutoCompleteTextView.CommaTokenizer;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -78,6 +82,26 @@ public class Nearby_Station_Search extends Activity implements LocationListener{
 		update_nearby_station = false;
 		current_position_marker = null;
 		Nearest_Station_Marker = new ArrayList<Marker>();
+
+		Spinner Nearby_Station_Spinner = (Spinner) findViewById(R.id.Nearby_Station_Search_Summary_Spinner);
+		
+		Nearby_Station_Spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+			@Override
+			public void onItemSelected(AdapterView<?> arg0, View arg1,
+					int arg2, long arg3) {
+				// TODO Auto-generated method stub
+				return;
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+				// TODO Auto-generated method stub
+				return;
+			}
+		});
+		
+		
 		
 		try 
 		{
@@ -195,8 +219,9 @@ public class Nearby_Station_Search extends Activity implements LocationListener{
 					CMRL_GMap_Direction md = new CMRL_GMap_Direction();
 
 					Document doc = md.getDocument(new LatLng(test_location.getLatitude(),test_location.getLongitude()), new LatLng(station_location.getLatitude(),station_location.getLongitude()), CMRL_GMap_Direction.MODE_DRIVING);
-					//ArrayList<LatLng> directionPoint = md.getDirection(doc);
+					ArrayList<LatLng> directionPoint = md.getDirection(doc);
 					station_distance = md.getDistanceValue(doc);
+					String direction_summary = md.getDurationText(doc) +" via " +  md.getRouteSummary(doc);
 					
 					/*NodeList node1 = (NodeList) nodes.item(getNodeIndex(nodes, "route"));
 					node1 = (NodeList) node1.item(getNodeIndex(nodes, "leg"));
@@ -210,6 +235,8 @@ public class Nearby_Station_Search extends Activity implements LocationListener{
 						nearby_station.setDistance_from_current(station_distance/1000);
 						nearby_station.setStation_Name(station_name);
 						nearby_station.setRoute_id(current_route_id);
+						nearby_station.setDirection_Point(directionPoint);
+						nearby_station.setDirection_Summary(direction_summary);
 						
 						
 						/*if(nearby_station_search_result_list.size()!=0)
@@ -298,13 +325,9 @@ public class Nearby_Station_Search extends Activity implements LocationListener{
 		//googleMap.clear();
 		
 		ListView Nearby_Staion_Result_List = (ListView) findViewById(R.id.Nearby_Station_Search_Summary_ListView);
+		Spinner Nearby_Station_Spinner = (Spinner) findViewById(R.id.Nearby_Station_Search_Summary_Spinner);
+		
 		List<Nearby_Search_Result> nearby_search_result_list;
-		nearby_search_result_list = Get_Nearest_Station_List_To_Location(arg0);
-		
-		Nearby_Search_List_Adapter nearby_station_summary_adapter = new Nearby_Search_List_Adapter(this, R.layout.nearest_station_search_list_item_layout, nearby_search_result_list);
-		
-		nearby_station_summary_adapter.setDropDownViewResource(R.layout.nearest_station_search_list_item_layout);
-		Nearby_Staion_Result_List.setAdapter(nearby_station_summary_adapter);
 
 		LatLng Current_Lat_Lng = new LatLng(arg0.getLatitude(), arg0.getLongitude());
 
@@ -327,12 +350,28 @@ public class Nearby_Station_Search extends Activity implements LocationListener{
 			current_position_marker.setPosition(Current_Lat_Lng);
 		}
 		
+
+		
+		nearby_search_result_list = Get_Nearest_Station_List_To_Location(arg0);
+		
+		Nearby_Search_List_Adapter nearby_station_summary_adapter = new Nearby_Search_List_Adapter(this, R.layout.nearest_station_search_list_item_layout, nearby_search_result_list);
+		
+		nearby_station_summary_adapter.setDropDownViewResource(R.layout.nearest_station_search_list_item_layout);
+		Nearby_Staion_Result_List.setAdapter(nearby_station_summary_adapter);
+		
+		Nearby_Station_Spinner.setAdapter(nearby_station_summary_adapter);
+
 		for (Nearby_Search_Result nearby_Search_Result : nearby_search_result_list) 
 		{
 			station_name = nearby_Search_Result.getStation_Name();
 			Location station_location = db_helper.get_Station_Location_by_Station_Name(station_name);
 			Marker nearest_station_marker = googleMap.addMarker(new MarkerOptions().position(new LatLng(station_location.getLatitude(), station_location.getLongitude())).title(station_name));
 			Nearest_Station_Marker.add(nearest_station_marker);
+			PolylineOptions Route_Current_Nearest = new PolylineOptions(); 
+			Route_Current_Nearest.addAll(nearby_Search_Result.getDirection_Point());
+			Route_Current_Nearest.width(2);
+			Route_Current_Nearest.color(Color.RED);
+			googleMap.addPolyline(Route_Current_Nearest);
 		}
 		
 		

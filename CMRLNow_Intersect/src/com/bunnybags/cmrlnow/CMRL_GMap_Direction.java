@@ -145,6 +145,13 @@ public class CMRL_GMap_Direction {
         Log.i("DurationText", node2.getTextContent());
         return node2.getTextContent();
     }
+    
+    public String getRouteSummary (Document doc) {
+        NodeList nl1 = doc.getElementsByTagName("summary");
+        Node node1 = nl1.item(nl1.getLength() - 1);
+        Log.i("DurationText", node1.getTextContent());
+        return node1.getTextContent();
+    }
 
     public int getDurationValue (Document doc) {
         NodeList nl1 = doc.getElementsByTagName("duration");

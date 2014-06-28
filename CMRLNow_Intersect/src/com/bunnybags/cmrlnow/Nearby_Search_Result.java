@@ -3,9 +3,12 @@
  */
 package com.bunnybags.cmrlnow;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
+
+import com.google.android.gms.maps.model.LatLng;
 
 
 /**
@@ -18,6 +21,8 @@ public class Nearby_Search_Result implements Comparable<Nearby_Search_Result>{
 	private String Station_Name;
 	private int Route_id;
 	private Float Distance_from_current;
+	private ArrayList<LatLng> Direction_Point;
+	private String Direction_Summary;
 	
 	
 	/**
@@ -95,5 +100,37 @@ public class Nearby_Search_Result implements Comparable<Nearby_Search_Result>{
 		{
 			return false;
 		}
+	}
+
+
+	/**
+	 * @return the direction_Point
+	 */
+	public ArrayList<LatLng> getDirection_Point() {
+		return Direction_Point;
+	}
+
+
+	/**
+	 * @param direction_Point the direction_Point to set
+	 */
+	public void setDirection_Point(ArrayList<LatLng> direction_Point) {
+		Direction_Point = direction_Point;
+	}
+
+
+	/**
+	 * @return the direction_Summary
+	 */
+	public String getDirection_Summary() {
+		return Direction_Summary;
+	}
+
+
+	/**
+	 * @param direction_Summary the direction_Summary to set
+	 */
+	public void setDirection_Summary(String direction_Summary) {
+		Direction_Summary = direction_Summary;
 	}
 }
