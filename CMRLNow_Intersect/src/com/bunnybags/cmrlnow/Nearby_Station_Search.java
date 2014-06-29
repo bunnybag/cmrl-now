@@ -191,13 +191,14 @@ public class Nearby_Station_Search extends TabActivity implements LocationListen
 
 		}
 		
-		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10000, 0, this);
-		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 0, this);
+		//locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10000, 0, this);
+		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
 		
 	}
 
 	List<Nearby_Search_Result> Get_Nearest_Station_List_To_Location(
-			Location test_location) {
+			Location test_location)
+			{
 
 		Float least_distance = Float.valueOf(Float.MAX_VALUE);
 		float station_distance;
@@ -231,10 +232,6 @@ public class Nearby_Station_Search extends TabActivity implements LocationListen
 					station_distance = md.getDistanceValue(doc);
 					String direction_summary = md.getDurationText(doc) +" via " +  md.getRouteSummary(doc);
 					
-					/*NodeList node1 = (NodeList) nodes.item(getNodeIndex(nodes, "route"));
-					node1 = (NodeList) node1.item(getNodeIndex(nodes, "leg"));
-			        NodeList nl2 = node1.getChildNodes();
-			        Node node2 = nl2.item(getNodeIndex(nl2, "text"));*/
 					
 					//if(station_distance <= least_distance)
 					{
@@ -258,6 +255,7 @@ public class Nearby_Station_Search extends TabActivity implements LocationListen
 						if(!nearby_station_search_result_list.contains(nearby_station))
 						{
 							nearby_station_search_result_list.add(nearby_station);
+							//Load_Nearest_Station_List_Progress.incrementProgressBy(1);
 						}
 						
 					}
@@ -315,18 +313,20 @@ public class Nearby_Station_Search extends TabActivity implements LocationListen
 
 	@Override
 	public void onLocationChanged(Location arg0) {
-		// TODO Auto-generated method stub
 
 		if(!update_nearby_station)
 		{
 			return;
 		}
 		
+		ProgressBar Load_Nearest_Station_List_Progress = (ProgressBar) this.findViewById(R.id.Nearest_Station_List_Progress_Bar);
+		Load_Nearest_Station_List_Progress.setMax(7);
+		Load_Nearest_Station_List_Progress.setProgress(0);
 		
 		String station_name;
 		DBHelper db_helper = new DBHelper(Application_Context);
 		
-		Toast.makeText(getApplicationContext(),"Location received from " + arg0.getProvider(),Toast.LENGTH_SHORT).show();
+		//Toast.makeText(getApplicationContext(),"Location received from " + arg0.getProvider(),Toast.LENGTH_SHORT).show();
 		
 		
 		//googleMap.clear();
@@ -372,20 +372,29 @@ public class Nearby_Station_Search extends TabActivity implements LocationListen
 			e.printStackTrace();
 		}
 		
-		/*nearby_search_result_list = Get_Nearest_Station_List_To_Location(arg0);
-		
-		this.setNearby_search_result_list(nearby_search_result_list);*/
-		
 		Nearby_Search_List_Adapter nearby_station_summary_adapter = new Nearby_Search_List_Adapter(this, R.layout.nearest_station_search_list_item_layout, nearby_search_result_list_from_task);
 		
 		nearby_station_summary_adapter.setDropDownViewResource(R.layout.nearest_station_search_list_item_layout);
 		Nearby_Staion_Result_List.setAdapter(nearby_station_summary_adapter);
 		
-		ProgressBar Load_Nearest_Station_List_Progress = (ProgressBar) this.findViewById(R.id.Nearest_Station_List_Progress_Bar); 
+		
 		Load_Nearest_Station_List_Progress.setVisibility(View.GONE);
 		
 		Nearby_Staion_Result_List.setVisibility(View.VISIBLE);
 		
+		for (Nearby_Search_Result nearby_Search_Result : nearby_search_result_list_from_task) {
+			station_name = nearby_Search_Result.getStation_Name();
+			Location station_location = db_helper.get_Station_Location_by_Station_Name(station_name);
+			Marker nearest_station_marker = this.googleMap.addMarker(new MarkerOptions().position(new LatLng(station_location.getLatitude(), station_location.getLongitude())).title(station_name));
+			this.Nearest_Station_Marker.add(nearest_station_marker);
+			PolylineOptions Route_Current_Nearest = new PolylineOptions(); 
+			Route_Current_Nearest.addAll(nearby_Search_Result.getDirection_Point());
+			Route_Current_Nearest.width(8);
+			Route_Current_Nearest.color(Color.BLUE);
+			this.setNearest_Station_Polyline(this.googleMap.addPolyline(Route_Current_Nearest));
+			break;
+		}
+				
 		update_nearby_station = false;
 		this.location_manager.removeUpdates(this);
 		

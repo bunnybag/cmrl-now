@@ -10,6 +10,7 @@ import android.os.AsyncTask;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 /**
  * @author SURESH
@@ -30,20 +31,10 @@ public class Search_Nearby_Station_Task extends AsyncTask<Void, Void, List<Nearb
 	@Override
 	protected List<Nearby_Search_Result> doInBackground(Void... params) 
 	{
-		ListView Nearby_Staion_Result_List = (ListView) this.Nearest_Search_Activity.findViewById(R.id.Nearby_Station_Search_Summary_ListView);
 		List<Nearby_Search_Result> nearby_search_result_list = this.Nearest_Search_Activity.Get_Nearest_Station_List_To_Location(this.current_location);
 		
 		this.Nearest_Search_Activity.setNearby_search_result_list(nearby_search_result_list);
-		/*Nearby_Search_List_Adapter nearby_station_summary_adapter = new Nearby_Search_List_Adapter(this.Nearest_Search_Activity, R.layout.nearest_station_search_list_item_layout, nearby_search_result_list);
 		
-		nearby_station_summary_adapter.setDropDownViewResource(R.layout.nearest_station_search_list_item_layout);
-		Nearby_Staion_Result_List.setAdapter(nearby_station_summary_adapter);
-		
-		ProgressBar Load_Nearest_Station_List_Progress = (ProgressBar) this.Nearest_Search_Activity.findViewById(R.id.Nearest_Station_List_Progress_Bar); 
-		Load_Nearest_Station_List_Progress.setVisibility(View.GONE);
-		
-		Nearby_Staion_Result_List.setVisibility(View.VISIBLE);
-*/
 		return nearby_search_result_list;
 	}
 
