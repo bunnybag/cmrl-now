@@ -34,23 +34,37 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" >
 
-                <LinearLayout
-                    android:id="@+id/tab1"
+                <RelativeLayout
+                    android:id="@+id/Nearby_Stations_List_Tab"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" >
+                    
+					<ProgressBar
+                        android:id="@+id/Nearest_Station_List_Progress_Bar"
+                        style="?android:attr/progressBarStyleLarge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true"
+                        android:visibility="visible" />
 
                     <ListView
                         android:id="@+id/Nearby_Station_Search_Summary_ListView"
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_below="@id/Nearest_Station_List_Progress_Bar"
                         android:drawSelectorOnTop="true"
-                        android:fastScrollEnabled="true" >
+                        android:visibility="visible" >
                     </ListView>
-                </LinearLayout>
+
+
+
+                </RelativeLayout>
 
                 <LinearLayout
-                    android:id="@+id/tab2"
+                    android:id="@+id/Nearby_Stations_Map_Tab"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" >
 

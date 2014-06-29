@@ -10,6 +10,7 @@ import java.util.Objects;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import android.app.Activity;
@@ -100,10 +101,25 @@ public class Nearby_Search_List_Adapter extends ArrayAdapter<Nearby_Search_Resul
 			@Override
 			public void onClick(View v) {
 				ListView Nearby_Staion_Result_List = (ListView) activity.findViewById(R.id.Nearby_Station_Search_Summary_ListView);
-				activity.getNearest_Station_Polyline().remove();
-				activity.Nearest_Station_Marker.get(0).remove();
 				
-				activity.Nearest_Station_Marker.clear();
+				Polyline Direction_Polyline = activity.getNearest_Station_Polyline();
+				if(Direction_Polyline != null)
+				{
+					Direction_Polyline.remove();
+				}
+				
+				List<Marker> Nearest_Station_Marker_List = activity.Nearest_Station_Marker;
+				
+				if(Nearest_Station_Marker_List != null)
+				{
+					if(Nearest_Station_Marker_List.size() > 0)
+					{
+						Nearest_Station_Marker_List.get(0).remove();
+					}
+					activity.Nearest_Station_Marker.clear();
+				}
+				
+				
 				
 				TextView Station_Name = (TextView) v.findViewById(R.id.Nearest_Station_Name_Text);
 				String station_name = Station_Name.getText().toString();
