@@ -1,6 +1,7 @@
 package com.bunnybags.cmrlnow;
 
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -16,6 +17,7 @@ import org.w3c.dom.NodeList;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.internal.fa;
 //import com.google.android.gms.maps.GoogleMap;
 //import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.*;
@@ -29,6 +31,9 @@ import com.google.android.gms.maps.model.internal.IPolylineDelegate;
 //import com.google.android.gms.maps.GoogleMap;
 //import com.google.android.maps.MapActivity;
 
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
@@ -138,7 +143,31 @@ public class Nearby_Station_Search extends TabActivity implements LocationListen
 		
 		boolean gps_provider_status = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 		
-				
+		boolean mobileDataEnabled = false; // Assume disabled
+		/*ConnectivityManager cm = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+		
+		try {
+			Class cmClass = Class.forName(cm.getClass().getName());
+			Method method = cmClass.getDeclaredMethod("getMobileDataEnabled");
+			method.setAccessible(true); // Make the method callable
+			// get the setting for "mobile data"
+			mobileDataEnabled = (Boolean)method.invoke(cm);
+		} catch (Exception e) {
+			// Some problem accessible private API and do whatever error handling you want here
+		}
+		
+		WifiManager wm = (WifiManager) this.getSystemService(Context.WIFI_SERVICE);*/
+		boolean wifiDataEnabled = false;  
+		//wifiDataEnabled = (wm.isWifiEnabled()) ? true:false;
+		
+		ConnectivityManager cm = (ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
+		 
+		NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+		boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+		
+		
+		
+		
 		if(!gps_provider_status)
 		{
 			AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
@@ -178,6 +207,44 @@ public class Nearby_Station_Search extends TabActivity implements LocationListen
 		{
 			update_nearby_station  = true;
 		}
+		
+
+		if(!isConnected)
+		{
+			//update_nearby_station = false;
+			
+			AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+			 
+			alertDialogBuilder.setTitle("Data Service");
+			alertDialogBuilder.setCancelable(false);
+			alertDialogBuilder.setMessage("Enable data service or connect to Wifi network to get diretions to nearby stations");
+			alertDialogBuilder.setIcon(android.R.drawable.ic_dialog_alert);
+			
+			alertDialogBuilder.setNegativeButton("Cancel", new OnClickListener() {
+			
+					@Override
+					public void onClick(DialogInterface arg0, int arg1) {
+							arg0.cancel();
+						}
+					});
+			
+			alertDialogBuilder.setPositiveButton("Enable Data", new OnClickListener() {
+						
+						@Override
+						public void onClick(DialogInterface arg0, int arg1) {
+						
+							Intent callDataSettingIntent = new Intent(Intent.ACTION_MAIN);
+							callDataSettingIntent.setClassName("com.android.phone", "com.android.phone.Settings");
+							nearby_activity.startActivity(callDataSettingIntent);
+							
+						}
+					});
+			 
+			AlertDialog alertdialog = alertDialogBuilder.create();
+			alertdialog.setCanceledOnTouchOutside(false);
+			alertdialog.show();
+		}
+		
 		
 		Last_Known_Location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 		if(Last_Known_Location != null)
@@ -315,6 +382,17 @@ public class Nearby_Station_Search extends TabActivity implements LocationListen
 	public void onLocationChanged(Location arg0) {
 
 		if(!update_nearby_station)
+		{
+			return;
+		}
+		
+		
+		ConnectivityManager cm = (ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
+		 
+		NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+		boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+		
+		if(!isConnected)
 		{
 			return;
 		}
