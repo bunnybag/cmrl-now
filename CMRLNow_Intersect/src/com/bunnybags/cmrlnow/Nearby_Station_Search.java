@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -195,7 +196,7 @@ public class Nearby_Station_Search extends TabActivity implements LocationListen
 		
 	}
 
-	private List<Nearby_Search_Result> Get_Nearest_Station_List_To_Location(
+	List<Nearby_Search_Result> Get_Nearest_Station_List_To_Location(
 			Location test_location) {
 
 		Float least_distance = Float.valueOf(Float.MAX_VALUE);
@@ -332,7 +333,6 @@ public class Nearby_Station_Search extends TabActivity implements LocationListen
 		
 		ListView Nearby_Staion_Result_List = (ListView) findViewById(R.id.Nearby_Station_Search_Summary_ListView);
 		
-		List<Nearby_Search_Result> nearby_search_result_list;
 
 		LatLng Current_Lat_Lng = new LatLng(arg0.getLatitude(), arg0.getLongitude());
 
@@ -355,30 +355,31 @@ public class Nearby_Station_Search extends TabActivity implements LocationListen
 			current_position_marker.setPosition(Current_Lat_Lng);
 		}
 		
-
 		
-		nearby_search_result_list = Get_Nearest_Station_List_To_Location(arg0);
+		Search_Nearby_Station_Task search_stations_async = new Search_Nearby_Station_Task(nearby_activity,arg0); 
+		search_stations_async.execute();
 		
-		this.nearby_search_result_list = nearby_search_result_list;
+		List<Nearby_Search_Result> nearby_search_result_list_from_task = null;
 		
-		Nearby_Search_List_Adapter nearby_station_summary_adapter = new Nearby_Search_List_Adapter(this, R.layout.nearest_station_search_list_item_layout, nearby_search_result_list);
+		try 
+		{
+			nearby_search_result_list_from_task = search_stations_async.get();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		/*nearby_search_result_list = Get_Nearest_Station_List_To_Location(arg0);
+		
+		this.setNearby_search_result_list(nearby_search_result_list);*/
+		
+		Nearby_Search_List_Adapter nearby_station_summary_adapter = new Nearby_Search_List_Adapter(this, R.layout.nearest_station_search_list_item_layout, nearby_search_result_list_from_task);
 		
 		nearby_station_summary_adapter.setDropDownViewResource(R.layout.nearest_station_search_list_item_layout);
 		Nearby_Staion_Result_List.setAdapter(nearby_station_summary_adapter);
-		
-		for (Nearby_Search_Result nearby_Search_Result : nearby_search_result_list) 
-		{
-			station_name = nearby_Search_Result.getStation_Name();
-			Location station_location = db_helper.get_Station_Location_by_Station_Name(station_name);
-			Marker nearest_station_marker = googleMap.addMarker(new MarkerOptions().position(new LatLng(station_location.getLatitude(), station_location.getLongitude())).title(station_name));
-			Nearest_Station_Marker.add(nearest_station_marker);
-			PolylineOptions Route_Current_Nearest = new PolylineOptions(); 
-			Route_Current_Nearest.addAll(nearby_Search_Result.getDirection_Point());
-			Route_Current_Nearest.width(8);
-			Route_Current_Nearest.color(Color.BLUE);
-			this.setNearest_Station_Polyline(googleMap.addPolyline(Route_Current_Nearest));
-			break;
-		}
 		
 		ProgressBar Load_Nearest_Station_List_Progress = (ProgressBar) this.findViewById(R.id.Nearest_Station_List_Progress_Bar); 
 		Load_Nearest_Station_List_Progress.setVisibility(View.GONE);
@@ -425,6 +426,21 @@ public class Nearby_Station_Search extends TabActivity implements LocationListen
 	 */
 	public void setNearest_Station_Polyline(Polyline nearest_Station_Polyline) {
 		Nearest_Station_Polyline = nearest_Station_Polyline;
+	}
+
+	/**
+	 * @return the nearby_search_result_list
+	 */
+	public List<Nearby_Search_Result> getNearby_search_result_list() {
+		return nearby_search_result_list;
+	}
+
+	/**
+	 * @param nearby_search_result_list the nearby_search_result_list to set
+	 */
+	public void setNearby_search_result_list(
+			List<Nearby_Search_Result> nearby_search_result_list) {
+		this.nearby_search_result_list = nearby_search_result_list;
 	}
 
 
